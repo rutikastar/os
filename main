@@ -1,0 +1,2445 @@
+SHELL SCRIPTING Q and commands
+Factorial
+factorial(){
+    n=$1
+    result=1
+    for((i=1;i<=n;i++)); do
+    result=$((result*i))
+    done
+    
+    echo $result
+}
+
+res=$(factorial 5)
+echo $res
+Fib
+fibonacci(){
+    n=$1
+    a=0
+    b=1
+    
+    for((i=1;i<=n;i++)); do
+    echo -n "$a "
+    temp=$((a + b))
+    a=$b
+    b=$temp
+    done
+    
+}
+
+fibonacci 10
+
+String handling
+
+str1="hello"
+str2="world"
+str3="$str1 $str2"
+echo "concatenation of 2 strings: "
+echo $str3
+
+str4="Hello World"
+substr=${str4:6:5}
+echo "substring starting from 6th index: "
+echo $substr
+
+str5="my name is hello"
+len=${#str5}
+echo "length of the string 5 is: "
+echo $len
+
+str6="hi my name is billy"
+newstr6=${str6/billy/Will}
+echo $newstr6
+
+echo "string compare:"
+stra="hello"
+strb="bye"
+strc="hello"
+if [ "$stra" = "$strb" ];then
+echo "strings are equal"
+else
+echo "strings arent equal"
+fi
+if [ "$stra" = "$strc" ];then
+echo "strings are equal"
+else
+echo "strings arent equal"
+fi
+#string upper / lower case
+upperstr=${stra^^}
+lowerstr=${strb,,}
+echo $upperstr
+echo $lowerstr
+
+Palindrome number
+echo "Enter a number: "
+read number
+
+reverse=0
+original=$number
+
+while [ $number -ne 0 ]
+do
+    remainder=$(( $number % 10 ))
+    reverse=$(( $reverse * 10 + $remainder ))
+    number=$(( $number / 10 ))
+done
+
+if [ $original -eq $reverse ]
+then
+    echo "$original is a palindrome."
+else
+    echo "$original is not a palindrome."
+fi
+Greater of 3 numbers
+echo "Enter three numbers:"
+read num1
+read num2
+read num3
+
+if [ $num1 -gt $num2 ] && [ $num1 -gt $num3 ]
+then
+    echo "$num1 is the greatest number"
+elif [ $num2 -gt $num1 ] && [ $num2 -gt $num3 ]
+then
+    echo "$num2 is the greatest number"
+else
+    echo "$num3 is the greatest number"
+fi
+Arithmetic ops
+echo " Enter the 1st number"
+read n1
+echo " Enter the 2nd number"
+read n2
+echo "Menu: 1:Add 2:Sub 3:Mul 4:Div 5:Mod"
+echo "Enter the choice"
+read ch
+case $ch in
+1) echo "Addition is: $((n1+n2))";;
+2) echo "Subtraction is: $((n1-n2))";;
+3) echo "Multiplication is: $((n1\*n2))";;
+4) echo "Division is: $((n1\/n2))";;
+5) echo "Modulas is: $((n1\%n2))";;
+*) echo "Enter valid choice";;
+esac
+
+CPU SCHEDULING
+FCFS
+import java.util.*;
+class Process{
+    int pid;
+    int at;
+    int bt;
+    int ct;
+    int wt;
+    int tat;
+
+
+    Process(int pid, int at, int bt){
+        this.pid = pid;
+        this.at = at;
+        this.bt = bt;
+    }
+}
+public class FCFSCPU {
+    public static void main(String[] args) {
+        ArrayList<Process>processes = new ArrayList<>();
+        processes.add(new Process(1, 0, 2));
+        processes.add(new Process(2, 2, 10));
+        processes.add(new Process(3, 1, 2));
+        processes.add(new Process(4, 4, 1));
+        processes.sort(Comparator.comparingInt(p->p.at));
+        int currentTime = 0;
+        for(int i = 0;i<processes.size();i++){
+            Process p = processes.get(i);
+            if(currentTime<p.at){
+                currentTime = p.at;
+            }
+            p.ct = currentTime + p.bt;
+            currentTime = p.ct;
+            p.tat = p.ct - p.at;
+            p.wt = p.tat - p.bt;
+        }
+        System.out.println("pid"+"\t"+"at"+"\t"+"bt"+"\t"+"ct"+"\t"+"tat"+"\t"+"wt");
+        for(int i = 0;i<processes.size();i++){
+            Process p = processes.get(i);
+            System.out.println(p.pid+"\t"+p.at+"\t"+p.bt+"\t"+p.ct+"\t"+p.tat+"\t"+p.wt);
+        }
+    }
+}
+
+
+
+
+SJF
+import java.util.*;
+class Process {
+    int pid;
+    int bt;
+    int at;
+    int ct;
+    int wt;
+    int tat;
+
+
+    Process(int pid, int at, int bt) {
+        this.at = at;
+        this.bt = bt;
+        this.pid = pid;
+    }
+}
+
+
+public class SJFCPU{
+    public static void main(String[] args) {
+        ArrayList<Process> processes = new ArrayList<>();
+        processes.add(new Process(1, 0, 2));
+        processes.add(new Process(2, 1, 4));
+        processes.add(new Process(3, 1, 1));
+        Collections.sort(processes, Comparator.comparingInt((Process p) -> p.at).thenComparingInt(p -> p.bt));
+
+
+        int currentTime = 0;
+        for (int i = 0; i < processes.size(); i++) {
+            Process p = processes.get(i);
+            if (p.at > currentTime) {
+                currentTime = p.at;
+            }
+            p.ct = currentTime + p.bt;
+            currentTime = p.ct;
+            p.tat = p.ct - p.at;
+            p.wt = p.tat - p.bt;
+        }
+
+
+        // Display results
+        System.out.println("PID\tAT\tBT\tCT\tTAT\tWT");
+        for (int i = 0; i < processes.size(); i++) {
+            Process p = processes.get(i);
+            System.out.println(p.pid + "\t" + p.at + "\t" + p.bt + "\t" + p.ct + "\t" + p.tat + "\t" + p.wt);
+        }
+    }
+}
+
+
+
+PRIORITY p
+import java.util.*;
+class Process{
+    int at;
+    int bt;
+    int ct;
+    int pid;
+    int priority;
+    int tat;
+    int wt;
+    int rt;
+    Process(int pid, int at, int bt, int priority){
+        this.pid = pid;
+        this.at = at;
+        this.bt = bt;
+        this.priority = priority;
+        this.rt = bt;
+    }
+}
+public class PrioPCPU {
+    public static void main(String[] args) {
+        ArrayList<Process> processes = new ArrayList<>();
+        processes.add(new Process(1, 0, 4, 1));
+        processes.add(new Process(2, 1, 5, 3));
+        processes.add(new Process(3, 2, 9, 1));
+        processes.add(new Process(4, 5, 8, 2));
+        Collections.sort(processes, Comparator.comparingInt((Process p)->p.at).thenComparingInt(p->p.priority));
+        int currentTime = 0;
+        int completedProcesses = 0;
+        int n = processes.size();
+        Process currentProcess = null;
+        Queue<Process> readyQueue = new LinkedList<>();
+        while(completedProcesses < n){
+            for(int i = 0;i<n;i++){
+                Process p = processes.get(i);
+                if(p.at == currentTime){
+                    readyQueue.add(p);
+                }
+            }
+            Process highestPriority = null;
+            for(Process p : readyQueue){
+                if(highestPriority==null || p.priority<highestPriority.priority){
+                    highestPriority = p;
+                }
+            }
+            if(highestPriority!=null){//pre emption condition
+                if(currentProcess == null || currentProcess.priority > highestPriority.priority){
+                    currentProcess = highestPriority;
+                }
+                currentProcess.rt--;
+                currentTime++;
+                if(currentProcess.rt == 0){
+                    currentProcess.ct = currentTime;
+                    currentProcess.tat = currentProcess.ct - currentProcess.at;
+                    currentProcess.wt = currentProcess.tat - currentProcess.bt;
+                    completedProcesses++;
+                    readyQueue.remove(currentProcess);
+                    currentProcess = null;
+                }
+            }else{
+                currentTime++;
+            }
+        }
+        System.out.println("PID\tAT\tBT\tPriority\tCT\tTAT\tWT");
+        for (Process p : processes) {
+            System.out.println(p.pid + "\t" + p.at + "\t" + p.bt + "\t" + p.priority + "\t\t" + p.ct + "\t" + p.tat + "\t" + p.wt);
+        }
+    }    
+}
+
+
+
+PRIORITY NP
+import java.util.*;
+class Process{
+    int at;
+    int bt;
+    int ct;
+    int pid;
+    int priority;
+    int tat;
+    int wt;
+    Process(int pid, int at, int bt, int priority){
+        this.pid = pid;
+        this.at = at;
+        this.bt = bt;
+        this.priority = priority;
+    }
+}
+
+
+public class PrioNPCPU {
+    public static void main(String[] args) {
+        ArrayList<Process> processes = new ArrayList<>();
+        processes.add(new Process(1, 0, 4, 1));
+        processes.add(new Process(2, 1, 5, 3));
+        processes.add(new Process(3, 2, 9, 1));
+        processes.add(new Process(4, 5, 8, 2));
+        Collections.sort(processes, Comparator.comparingInt((Process p)->p.at).thenComparingInt(p->p.priority));
+        int currentTime = 0;
+        int completedProcesses = 0;
+        int n= processes.size();
+        while(completedProcesses < n){
+            Process highestPriority = null;
+            for(int i = 0;i<n;i++){
+                Process p = processes.get(i);
+                if(p.at<=currentTime && p.ct == 0){
+                    if(highestPriority==null||p.priority < highestPriority.priority){
+                        highestPriority = p;
+                    }
+                }
+            }
+            if(highestPriority!=null){
+                currentTime = Math.max(currentTime, highestPriority.at);
+                highestPriority.ct = currentTime + highestPriority.bt;
+                currentTime = highestPriority.ct;
+                highestPriority.tat = highestPriority.ct - highestPriority.at;
+                highestPriority.wt = highestPriority.tat - highestPriority.bt;
+                completedProcesses++;
+            }else{
+                currentTime++;
+            }
+        }
+        System.out.println("PID\tAT\tBT\tPriority\tCT\tTAT\tWT");
+        for (Process p : processes) {
+            System.out.println(p.pid + "\t" + p.at + "\t" + p.bt + "\t" + p.priority + "\t\t" + p.ct + "\t" + p.tat + "\t" + p.wt);
+        }
+
+
+
+
+    }    
+}
+
+SRTF
+import java.util.*;
+class Process{
+    int pid;
+    int at;
+    int bt;
+    int rt;
+    int ct;
+    int tat;
+    int wt;
+
+
+    Process(int pid, int at, int bt){
+        this.pid = pid;
+        this.at = at;
+        this.bt = bt;
+        this.rt = bt;
+    }
+}
+
+
+public class SRTFCPU {
+    public static void main(String[] args) {
+        ArrayList<Process>processes = new ArrayList<>();
+        processes.add(new Process(1, 0, 2));
+        processes.add(new Process(2, 1, 4));
+        processes.add(new Process(3, 1, 1));
+        processes.sort(Comparator.comparingInt(p->p.at));
+
+
+        int currentTime = 0;
+        int completedProcesses = 0;
+        int n = processes.size();
+        Process currentProcess = null;
+
+
+        while(completedProcesses < n){
+            Process shortestJob = null;
+            for(int i = 0;i<processes.size();i++){
+                Process p = processes.get(i);
+                if(p.at<=currentTime && p.rt>0){
+                    if(shortestJob == null || p.rt < shortestJob.rt){
+                        shortestJob = p;
+                    }
+                }
+            }
+            if(shortestJob != null){
+                currentProcess = shortestJob;
+                currentTime++;
+                currentProcess.rt--;
+
+
+                if(currentProcess.rt == 0){
+                    currentProcess.ct = currentTime;
+                    currentProcess.tat = currentProcess.ct - currentProcess.at;
+                    currentProcess.wt = currentProcess.tat - currentProcess.bt;
+                    completedProcesses++;
+                }
+            }
+            else{
+                currentTime++;
+            }    
+        }
+        System.out.println("PID\tat\tbt\tct\ttat\twt");
+            for (int i = 0; i < processes.size(); i++) {
+                Process p = processes.get(i);
+                System.out.println(p.pid + "\t" + p.at + "\t" + p.bt+ "\t" + p.ct + "\t" + p.tat + "\t" + p.wt);
+            }
+    }    
+}
+
+
+
+ROBIN ROUND
+import java.util.*;
+
+
+class Process{
+    int pid;
+    int at;
+    int bt;
+    int ct;
+    int rt;
+    int tat;
+    int wt;
+
+
+    Process(int pid, int at, int bt) {
+        this.pid = pid;
+        this.at = at;
+        this.bt = bt;
+        this.rt = bt;
+    }
+}
+public class robinCPU {
+    public static void main(String[] args) {
+        ArrayList<Process> processes = new ArrayList<>();
+        processes.add(new Process(1, 0, 8));
+        processes.add(new Process(2, 1, 4));
+        processes.add(new Process(3, 2, 9));
+        processes.add(new Process(4, 3, 5));
+
+
+        int timeSlice = 4;
+        int currentTime = 0;
+        Queue<Process> readyQueue = new LinkedList<>();
+        List<Process>arrivedProcesses = new ArrayList<>(processes);
+        int completedProcesses = 0;
+        int n = processes.size();
+
+
+        while(completedProcesses < n){
+            for(int i = 0;i<arrivedProcesses.size();i++){
+                Process p = arrivedProcesses.get(i);
+                if(p.at<=currentTime){
+                    readyQueue.add(p);
+                    arrivedProcesses.remove(i);
+                    i--;
+                }
+            }
+            if(!readyQueue.isEmpty()){
+                Process current = readyQueue.poll();
+                int executionTime = Math.min(timeSlice, current.rt);
+                currentTime+=executionTime;
+                current.rt-=executionTime;
+                
+                for(int i = 0;i<arrivedProcesses.size();i++){
+                    Process p = arrivedProcesses.get(i);
+                    if(p.at <= currentTime){
+                        readyQueue.add(p);
+                        arrivedProcesses.remove(i);
+                        i--;
+                    }
+
+
+                }
+                if(current.rt > 0){ //add to the back of the queue
+                    readyQueue.add(current);
+                }else{
+                    current.ct = currentTime;
+                    current.tat = current.ct - current.at;
+                    current.wt = current.tat - current.bt;
+                    completedProcesses++;
+                }
+            }else{
+                currentTime++;
+            }
+        }
+        System.out.println("PID\tAT\tBT\tCT\tTAT\tWT");
+        for (Process p : processes) {
+            System.out.println(p.pid + "\t" + p.at + "\t" + p.bt + "\t" + p.ct + "\t" + p.tat + "\t" + p.wt);
+        }
+       
+       
+    }
+   
+}
+
+
+
+
+
+
+
+
+DISK SCHEDULING
+FCFS
+import java.util.*;
+public class FCFSDISK {
+    public static void fcfs(int[]requests, int start){
+        int currentPosition = start;
+        int totalHeadMovement = 0;
+        for(int i = 0;i<requests.length;i++){
+            int headMovement = Math.abs(requests[i] - currentPosition);
+            totalHeadMovement = totalHeadMovement + headMovement;
+            currentPosition = requests[i];
+        }
+        System.out.println(totalHeadMovement);  
+    }
+    public static void main(String[] args) {
+        int[] requests = {98, 183, 37, 122, 14, 124, 65, 67};
+        int start = 53;
+        System.out.println("fcfs: ");
+        fcfs(requests, start);
+
+
+    }  
+}
+
+SSTF
+import java.util.*;
+
+
+public class sstf{
+    public static void SSTF(int[] requests, int start) {
+        boolean[] visited = new boolean[requests.length];
+        int currentPosition = start;
+        int totalHeadMovement = 0;
+
+
+        System.out.println("Position\tHead Movement");
+
+
+        for (int i = 0; i < requests.length; i++) {
+            int shortestSeekIndex = -1;
+            int shortestSeekTime = Integer.MAX_VALUE;
+
+
+            for (int j = 0; j < requests.length; j++) {
+                if (!visited[j]) {
+                    int seekTime = Math.abs(requests[j] - currentPosition);
+                    if (seekTime < shortestSeekTime) {
+                        shortestSeekTime = seekTime;
+                        shortestSeekIndex = j;
+                    }
+                }
+            }
+
+
+            visited[shortestSeekIndex] = true;
+            totalHeadMovement += shortestSeekTime;
+            currentPosition = requests[shortestSeekIndex];
+
+
+            System.out.println(requests[shortestSeekIndex] + "\t\t" + shortestSeekTime);
+        }
+
+
+        System.out.println("Total head movement: " + totalHeadMovement);
+    }
+
+
+    public static void main(String[] args) {
+        int[] requests = {98, 183, 37, 122, 14, 124, 65, 67};
+        int start = 53;
+
+
+        System.out.println("SSTF Disk Scheduling:");
+        SSTF(requests, start);
+    }
+}
+
+
+
+SCAN
+import java.util.*;
+
+
+public class SCANDiskScheduling {
+
+
+    public static void SCAN(int[] requests, int start, int diskSize, String direction) {
+        Arrays.sort(requests);
+
+
+        ArrayList<Integer> left = new ArrayList<>();
+        ArrayList<Integer> right = new ArrayList<>();
+        int totalHeadMovement = 0;
+        int currentPosition = start;
+
+
+        for (int request : requests) {
+            if (request < start) {
+                left.add(request);
+            } else {
+                right.add(request);
+            }
+        }
+
+
+        if (direction.equalsIgnoreCase("left")) {
+            left.add(0); // add the beginning of the disk
+        } else {
+            right.add(diskSize - 1); // add the end of the disk
+        }
+
+
+        Collections.reverse(left);
+
+
+        System.out.println("Position\tHead Movement");
+
+
+        if (direction.equalsIgnoreCase("left")) {
+            for (int i = 0; i < left.size(); i++) {
+                int seekTime = Math.abs(currentPosition - left.get(i));
+                totalHeadMovement += seekTime;
+                currentPosition = left.get(i);
+                System.out.println(currentPosition + "\t\t" + seekTime);
+            }
+
+
+            for (int i = 0; i < right.size(); i++) {
+                int seekTime = Math.abs(currentPosition - right.get(i));
+                totalHeadMovement += seekTime;
+                currentPosition = right.get(i);
+                System.out.println(currentPosition + "\t\t" + seekTime);
+            }
+        } else {
+            for (int i = 0; i < right.size(); i++) {
+                int seekTime = Math.abs(currentPosition - right.get(i));
+                totalHeadMovement += seekTime;
+                currentPosition = right.get(i);
+                System.out.println(currentPosition + "\t\t" + seekTime);
+            }
+
+
+            for (int i = 0; i < left.size(); i++) {
+                int seekTime = Math.abs(currentPosition - left.get(i));
+                totalHeadMovement += seekTime;
+                currentPosition = left.get(i);
+                System.out.println(currentPosition + "\t\t" + seekTime);
+            }
+        }
+
+
+        System.out.println("Total head movement: " + totalHeadMovement);
+    }
+
+
+    public static void main(String[] args) {
+        int[] requests = {98, 183, 37, 122, 14, 124, 65, 67};
+        int start = 53;
+        int diskSize = 200;
+        String direction = "left"; // Can be "left" or "right"
+
+
+        System.out.println("SCAN Disk Scheduling (" + direction + "):");
+        SCAN(requests, start, diskSize, direction);
+    }
+}
+
+
+
+
+
+CSCAN
+import java.util.*;
+
+
+public class CSCANDiskScheduling {
+
+
+    public static void CSCAN(int[] requests, int start, int diskSize) {
+        Arrays.sort(requests);
+
+
+        ArrayList<Integer> right = new ArrayList<>();
+        ArrayList<Integer> left = new ArrayList<>();
+        int totalHeadMovement = 0;
+        int currentPosition = start;
+
+
+        for (int request : requests) {
+            if (request >= start) {
+                right.add(request);
+            } else {
+                left.add(request);
+            }
+        }
+
+
+        right.add(diskSize - 1); // add the end of the disk
+        left.add(0); // add the beginning of the disk
+
+
+        System.out.println("Position\tHead Movement");
+
+
+        // Service the requests to the right
+        for (int i = 0; i < right.size(); i++) {
+            int seekTime = Math.abs(currentPosition - right.get(i));
+            totalHeadMovement += seekTime;
+            currentPosition = right.get(i);
+            System.out.println(currentPosition + "\t\t" + seekTime);
+        }
+
+
+        // Move from end of the disk to the beginning without servicing
+        totalHeadMovement += diskSize - 1;
+        currentPosition = 0;
+
+
+        // Service the requests to the left
+        for (int i = 0; i < left.size(); i++) {
+            int seekTime = Math.abs(currentPosition - left.get(i));
+            totalHeadMovement += seekTime;
+            currentPosition = left.get(i);
+            System.out.println(currentPosition + "\t\t" + seekTime);
+        }
+
+
+        System.out.println("Total head movement: " + totalHeadMovement);
+    }
+
+
+    public static void main(String[] args) {
+        int[] requests = {98, 183, 37, 122, 14, 124, 65, 67};
+        int start = 53;
+        int diskSize = 200;
+
+
+        System.out.println("C-SCAN Disk Scheduling:");
+        CSCAN(requests, start, diskSize);
+    }
+}
+
+
+
+PAGE REPLACEMENT
+FIFO
+import java.util.*;
+
+
+public class FIFOPageReplacement {
+    public static void FIFO(int[] pages, int frameSize) {
+        Queue<Integer> memory = new LinkedList<>();
+        int pageFaults = 0;
+
+
+        System.out.println("Page\tMemory");
+
+
+        for (int page : pages) {
+            if (!memory.contains(page)) {
+                if (memory.size() == frameSize) {
+                    memory.poll(); // Remove the oldest page
+                }
+                memory.add(page);
+                pageFaults++;
+            }
+            System.out.print(page + "\t");
+            System.out.println(memory);
+        }
+
+
+        System.out.println("Total page faults: " + pageFaults);
+    }
+
+
+    public static void main(String[] args) {
+        int[] pages = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 3};
+        int frameSize = 3;
+
+
+        System.out.println("FIFO Page Replacement:");
+        FIFO(pages, frameSize);
+    }
+}
+
+
+
+OPTIMAL
+import java.util.*;
+
+
+public class OptimalPageReplacement {
+    public static void optimal(int[] pages, int frameSize) {
+        List<Integer> memory = new ArrayList<>();
+        int pageFaults = 0;
+
+
+        System.out.println("Page\tMemory");
+
+
+        for (int i = 0; i < pages.length; i++) {
+            int page = pages[i];
+            if (!memory.contains(page)) {
+                if (memory.size() == frameSize) {
+                    int indexToReplace = findPageToReplace(memory, pages, i + 1);
+                    memory.set(indexToReplace, page);
+                } else {
+                    memory.add(page);
+                }
+                pageFaults++;
+            }
+            System.out.print(page + "\t");
+            System.out.println(memory);
+        }
+
+
+        System.out.println("Total page faults: " + pageFaults);
+    }
+
+
+    private static int findPageToReplace(List<Integer> memory, int[] pages, int startIndex) {
+        int farthestIndex = -1;
+        int indexToReplace = -1;
+
+
+        for (int i = 0; i < memory.size(); i++) {
+            int currentPage = memory.get(i);
+            int j;
+            for (j = startIndex; j < pages.length; j++) {
+                if (pages[j] == currentPage) {
+                    if (j > farthestIndex) {
+                        farthestIndex = j;
+                        indexToReplace = i;
+                    }
+                    break;
+                }
+            }
+            if (j == pages.length) { // Current page is not found in future pages
+                return i;
+            }
+        }
+        return indexToReplace == -1 ? 0 : indexToReplace;
+    }
+
+
+    public static void main(String[] args) {
+        int[] pages = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 3};
+        int frameSize = 3;
+
+
+        System.out.println("Optimal Page Replacement:");
+        optimal(pages, frameSize);
+    }
+}
+
+
+
+LRU
+import java.util.*;
+
+
+public class LRUPageReplacement {
+    public static void LRU(int[] pages, int frameSize) {
+        List<Integer> memory = new ArrayList<>();
+        Map<Integer, Integer> pageMap = new HashMap<>();
+        int pageFaults = 0;
+
+
+        System.out.println("Page\tMemory");
+
+
+        for (int i = 0; i < pages.length; i++) {
+            int page = pages[i];
+            if (!memory.contains(page)) {
+                if (memory.size() == frameSize) {
+                    int lruPage = findLRU(pageMap);
+                    memory.remove((Integer) lruPage);
+                }
+                memory.add(page);
+                pageFaults++;
+            }
+            pageMap.put(page, i);
+
+
+            System.out.print(page + "\t");
+            System.out.println(memory);
+        }
+
+
+        System.out.println("Total page faults: " + pageFaults);
+    }
+
+
+    private static int findLRU(Map<Integer, Integer> pageMap) {
+        return Collections.min(pageMap.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
+    }
+
+
+    public static void main(String[] args) {
+        int[] pages = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 3};
+        int frameSize = 3;
+
+
+        System.out.println("LRU Page Replacement:");
+        LRU(pages, frameSize);
+    }
+}
+
+
+
+
+SEMAPHORES: 
+READER WRITER 
+import java.util.concurrent.Semaphore;
+
+
+public class ReadersWritersSemaphore {
+    static Semaphore mutex = new Semaphore(1);
+    static Semaphore wrt = new Semaphore(1);
+    static int readCount = 0;
+
+
+    static class Reader implements Runnable {
+        public void run() {
+            try {
+                // Entry section
+                mutex.acquire();
+                readCount++;
+                if (readCount == 1) {
+                    wrt.acquire();
+                }
+                mutex.release();
+
+
+                // Reading section
+                System.out.println(Thread.currentThread().getName() + " is reading");
+
+
+                // Exit section
+                mutex.acquire();
+                readCount--;
+                if (readCount == 0) {
+                    wrt.release();
+                }
+                mutex.release();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    static class Writer implements Runnable {
+        public void run() {
+            try {
+                // Entry section
+                wrt.acquire();
+
+
+                // Writing section
+                System.out.println(Thread.currentThread().getName() + " is writing");
+
+
+                // Exit section
+                wrt.release();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Thread[] readers = new Thread[5];
+        Thread[] writers = new Thread[5];
+
+
+        for (int i = 0; i < 5; i++) {
+            readers[i] = new Thread(new Reader());
+            writers[i] = new Thread(new Writer());
+            readers[i].start();
+            writers[i].start();
+        }
+    }
+}
+
+
+
+PRODUCER CONSUMER
+import java.util.concurrent.Semaphore;
+
+
+public class ProducerConsumerSemaphore {
+    static final int CAPACITY = 5;
+    static Semaphore mutex = new Semaphore(1);
+    static Semaphore empty = new Semaphore(CAPACITY);
+    static Semaphore full = new Semaphore(0);
+
+
+    static class Producer implements Runnable {
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    empty.acquire();
+                    mutex.acquire();
+                    produce(i);
+                    mutex.release();
+                    full.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        private void produce(int item) {
+            System.out.println("Producing: " + item);
+        }
+    }
+
+
+    static class Consumer implements Runnable {
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    full.acquire();
+                    mutex.acquire();
+                    consume();
+                    mutex.release();
+                    empty.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        private void consume() {
+            System.out.println("Consuming");
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Thread producerThread = new Thread(new Producer());
+        Thread consumerThread = new Thread(new Consumer());
+
+
+        producerThread.start();
+        consumerThread.start();
+    }
+}
+
+
+
+DINING PHIL
+import java.util.concurrent.Semaphore;
+
+public class DiningPhilosophers {
+    static final int NUM_PHILOSOPHERS = 5;
+    static final Semaphore[] forks = new Semaphore[NUM_PHILOSOPHERS];
+    static final Semaphore mutex = new Semaphore(1);
+
+    static class Philosopher implements Runnable {
+        int id;
+        Semaphore leftFork;
+        Semaphore rightFork;
+
+        Philosopher(int id, Semaphore leftFork, Semaphore rightFork) {
+            this.id = id;
+            this.leftFork = leftFork;
+            this.rightFork = rightFork;
+        }
+
+        void think() throws InterruptedException {
+            System.out.println("Philosopher " + id + " is thinking.");
+            Thread.sleep((long) (Math.random() * 1000));
+        }
+
+        void eat() throws InterruptedException {
+            mutex.acquire();
+            leftFork.acquire();
+            rightFork.acquire();
+            mutex.release();
+
+            System.out.println("Philosopher " + id + " is eating.");
+            Thread.sleep((long) (Math.random() * 1000));
+
+            leftFork.release();
+            rightFork.release();
+        }
+
+        public void run() {
+            try {
+                while (true) {
+                    think();
+                    eat();
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
+            forks[i] = new Semaphore(1);
+        }
+
+        Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
+            philosophers[i] = new Philosopher(i, forks[i], forks[(i + 1) % NUM_PHILOSOPHERS]);
+            new Thread(philosophers[i]).start();
+        }
+    }
+}
+
+DEADLOCK: 
+BANKERS
+class Process {
+    int pid;
+    int[] alloc;
+    int[] max;
+    int[] need;
+
+
+    Process(int pid, int[] alloc, int[] max) {
+        this.pid = pid;
+        this.alloc = alloc;
+        this.max = max;
+        this.need = new int[max.length];
+        for (int i = 0; i < max.length; i++) {
+            this.need[i] = max[i] - alloc[i];
+        }
+    }
+}
+
+
+public class bankers {
+    public static void main(String[] args) {
+        // Number of processes and resources
+        int numProcesses = 5;
+        int numResources = 3;
+
+
+        // Allocation Matrix
+        int[][] alloc = {
+            {0, 1, 0},
+            {2, 0, 0},
+            {3, 0, 2},
+            {2, 1, 1},
+            {0, 0, 2}
+        };
+
+
+        // Max Matrix
+        int[][] max = {
+            {7, 5, 3},
+            {3, 2, 2},
+            {9, 0, 2},
+            {2, 2, 2},
+            {4, 3, 3}
+        };
+
+
+        // Available Resources
+        int[] available = {3, 3, 2};
+
+
+        // Initialize processes
+        Process[] processes = new Process[numProcesses];
+        for (int i = 0; i < numProcesses; i++) {
+            processes[i] = new Process(i, alloc[i], max[i]);
+        }
+
+
+        if (isSafe(processes, available)) {
+            System.out.println("System is in a safe state.");
+        } else {
+            System.out.println("System is NOT in a safe state.");
+        }
+    }
+
+
+    public static boolean isSafe(Process[] processes, int[] available) {
+        int numProcesses = processes.length;
+        int numResources = available.length;
+
+
+        // Work array to store a copy of available resources
+        int[] work = new int[numResources];
+        System.arraycopy(available, 0, work, 0, numResources);
+
+
+        // Finish array to indicate if a process can finish
+        boolean[] finish = new boolean[numProcesses];
+
+
+        // Safe sequence
+        int[] safeSequence = new int[numProcesses];
+        int safeIndex = 0;
+
+
+        while (safeIndex < numProcesses) {
+            boolean foundProcess = false;
+
+
+            for (int i = 0; i < numProcesses; i++) {
+                if (!finish[i]) {
+                    boolean canProceed = true;
+                    for (int j = 0; j < numResources; j++) {
+                        if (processes[i].need[j] > work[j]) {
+                            canProceed = false;
+                            break;
+                        }
+                    }
+
+
+                    if (canProceed) {
+                        // If the process can proceed, add its resources to work
+                        for (int j = 0; j < numResources; j++) {
+                            work[j] += processes[i].alloc[j];
+                        }
+
+
+                        safeSequence[safeIndex++] = processes[i].pid;
+                        finish[i] = true;
+                        foundProcess = true;
+                    }
+                }
+            }
+
+
+            if (!foundProcess) {
+                break;
+            }
+        }
+
+
+        if (safeIndex == numProcesses) {
+            System.out.print("Safe sequence: ");
+            for (int i : safeSequence) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
+DEADLOCK DETECTION
+public class DeadlockDetection {
+
+    public static void main(String[] args){
+        int numProcesses = 5;
+        int numResources = 3;
+
+        // Allocation Matrix
+        int[][] alloc = {
+            {0, 1, 0},
+            {2, 0, 0},
+            {3, 0, 2},
+            {2, 1, 1},
+            {0, 0, 2}
+        };
+
+        // Request Matrix (Need Matrix)
+        int[][] request = {
+            {0, 0, 0},
+            {2, 0, 2},
+            {0, 0, 0},
+            {1, 0, 0},
+            {0, 0, 2}
+        };
+
+        // Available Resources
+        int[] available = {0, 0, 0};
+
+        if (isDeadlocked(alloc, request, available, numProcesses, numResources)) {
+            System.out.println("System is in a deadlock state.");
+        } else {
+            System.out.println("System is not in a deadlock state.");
+        }
+    }
+
+    public static boolean isDeadlocked(int[][] alloc, int[][] request, int[] available, int numProcesses, int numResources) {
+        // Work array to store a copy of available resources
+        int[] work = new int[numResources];
+        System.arraycopy(available, 0, work, 0, numResources);
+
+        // Finish array to indicate if a process can finish
+        boolean[] finish = new boolean[numProcesses];
+
+        // Function to check if a process can proceed
+        boolean canProceed(int p, int[][] request, int[] work, int numResources) {
+            for (int j = 0; j < numResources; j++) {
+                if (request[p][j] > work[j]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Attempt to find a process that can finish
+        boolean progress;
+        do {
+            progress = false;
+            for (int i = 0; i < numProcesses; i++) {
+                if (!finish[i] && canProceed(i, request, work, numResources)) {
+                    for (int j = 0; j < numResources; j++) {
+                        work[j] += alloc[i][j];
+                    }
+                    finish[i] = true;
+                    progress = true;
+                }
+            }
+        } while (progress);
+
+        // If any process is not finished, there is a deadlock
+        for (boolean f : finish) {
+            if (!f) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+FITS:
+
+
+import java.util.*;
+
+
+class Hole {
+    int start;
+    int size;
+    int allocatedProcess;
+
+
+    Hole(int start, int size) {
+        this.start = start;
+        this.size = size;
+        this.allocatedProcess = -1;
+    }
+}
+
+
+class Process {
+    int pid;
+    int size;
+
+
+    Process(int pid, int size) {
+        this.pid = pid;
+        this.size = size;
+    }
+}
+
+
+public class test {
+    private static int nextFitIndex = 0;
+
+
+    public static void allocateMemFirstFit(ArrayList<Hole> holes, Process p) {
+        for (Hole h : holes) {
+            if (h.allocatedProcess == -1 && h.size >= p.size) {
+                h.allocatedProcess = p.pid;
+                h.size -= p.size;
+                break;
+            }
+        }
+    }
+
+
+    public static void allocateMemNextFit(ArrayList<Hole> memory, Process p) {
+        int startIndex = nextFitIndex;
+        for (int i = 0; i < memory.size(); i++) {
+            Hole h = memory.get((i + startIndex) % memory.size());
+            if (h.allocatedProcess == -1 && h.size >= p.size) {
+                h.allocatedProcess = p.pid;
+                h.size -= p.size;
+                nextFitIndex = (i + startIndex) % memory.size();
+                break;
+            }
+        }
+    }
+
+
+    public static void allocateMemBestFit(ArrayList<Hole> memory, Process p) {
+        Hole bestFitHole = null;
+        for (Hole hole : memory) {
+            if (hole.allocatedProcess == -1 && hole.size >= p.size) {
+                if (bestFitHole == null || hole.size < bestFitHole.size) {
+                    bestFitHole = hole;
+                }
+            }
+        }
+        if (bestFitHole != null) {
+            bestFitHole.allocatedProcess = p.pid;
+            bestFitHole.size -= p.size;
+        }
+    }
+
+
+    public static void allocateMemWorstFit(ArrayList<Hole> memory, Process p) {
+        Hole worstFitHole = null;
+        for (Hole hole : memory) {
+            if (hole.allocatedProcess == -1 && hole.size >= p.size) {
+                if (worstFitHole == null || hole.size > worstFitHole.size) {
+                    worstFitHole = hole;
+                }
+            }
+        }
+        if (worstFitHole != null) {
+            worstFitHole.allocatedProcess = p.pid;
+            worstFitHole.size -= p.size;
+        }
+    }
+
+
+    public static void printMemory(ArrayList<Hole> memory) {
+        System.out.println("Hole Start\tSize\tAllocated Process");
+        for (Hole hole : memory) {
+            System.out.println(hole.start + "\t\t" + hole.size + "\t" + (hole.allocatedProcess == -1 ? "None" : hole.allocatedProcess));
+        }
+    }
+
+
+    public static void main(String[] args) {
+        ArrayList<Hole> holes = new ArrayList<>();
+        holes.add(new Hole(0, 20));
+        holes.add(new Hole(30, 20));
+        holes.add(new Hole(50, 30));
+
+
+        Process p1 = new Process(1, 10);
+        Process p2 = new Process(2, 25);
+        Process p3 = new Process(3, 15);
+        Process p4 = new Process(4, 5);
+
+
+        // First Fit
+        allocateMemFirstFit(holes, p1);
+        printMemory(holes);
+        System.out.println();
+
+
+        // Next Fit
+        allocateMemNextFit(holes, p2);
+        printMemory(holes);
+        System.out.println();
+
+
+        // Best Fit
+        allocateMemBestFit(holes, p3);
+        printMemory(holes);
+        System.out.println();
+
+
+        // Worst Fit
+        allocateMemWorstFit(holes, p4);
+        printMemory(holes);
+        System.out.println();
+    }
+}
+
+
+
+
+PHASE1(load, execute user)
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <string.h>
+#include <stdlib.h>
+
+using namespace std;
+
+class opsys{
+
+    private:
+        char MM[100][4];
+        char IR[4];
+        char R[40];
+        int Ic;
+        int si;
+        bool C;
+        string buffer;
+    
+    public:
+        void init();
+        void Load();
+        void startexecution(string data[]);
+        void executeuserprogram(string data[]);
+        void MOS(string data[]);
+        void displayMemory();
+
+        fstream fin;
+        fstream fout;
+
+};
+
+void opsys::init(){                     
+
+    for(int i =0;i<100;i++){
+        for(int j=0;j<4;j++){
+            MM[i][j] = '-';
+        }
+    }
+
+    IR[0] = ' ';
+    R[0] = ' ';
+
+}
+
+int find(char ch){      
+    
+    int tempop = ch - 48;
+    tempop = tempop*10;
+
+    return tempop;
+}
+
+void Write(char IR[],char MM[][4]){        
+
+    
+    int sadd = find(IR[2]);
+    int eadd = sadd+9;
+    
+    ofstream outputFile("output.txt",ios::app); 
+
+    for(int i =sadd;i<eadd;i++){
+        for(int j=0;j<4;j++){
+            if(MM[i][j] != '-'){
+            outputFile<<MM[i][j];
+            }
+        }
+    }
+    outputFile.close();
+}
+
+
+int di = 0;
+void Read(string data[],char IR[],char MM[][4]){        
+    string dataline = data[di++];
+
+    IR[3] = '0'; 
+    
+    int row = find(IR[2]);
+  
+    int col =0;
+    for(int i =0;i<dataline.length();i++){
+        if(col == 4){
+            row++;
+            col = 0;
+        }
+        MM[row][col] = dataline.at(i);
+        col++;
+    }
+}
+
+void Terminate(){                               
+
+    ofstream outputFile("output.txt",ios::app);
+    outputFile<<"\n\n"<<endl;
+    outputFile.close();
+
+}
+
+void opsys::MOS(string data[]){
+ 
+    switch(si){
+
+        case 1:
+            Read(data,IR,MM);       
+            break;
+        case 2:
+            Write(IR,MM);          
+            break;
+        case 3:
+            Terminate();           
+            break;
+        default:
+            return;
+            break;
+    }
+}
+
+void opsys::executeuserprogram(string data[]){
+  
+
+    while(true){
+
+    si = 3;                         
+
+    for (int j = 0; j < 4; j++) {      
+            IR[j] = MM[Ic][j];
+    }
+    
+    Ic++;
+    
+    string function = "";
+    function = function + IR[0];
+    function = function + IR[1];
+
+    int operandAdd = find(IR[2]);
+    
+    if(function == "LR"){               
+        int r_count =0;
+        for(int i =operandAdd;i<=(operandAdd+9);i++){
+            for(int j = 0;j<4;j++){
+                R[r_count++] = MM[i][j];
+            }
+        }
+       si = 0;
+    }
+
+    else if(function == "SR"){          
+
+        int r_count = 0;
+        for(int i = operandAdd;i<(operandAdd+9);i++){
+            for(int j=0;j<4;j++){
+                MM[i][j] = R[r_count++];
+            }
+        }  
+        si =0;
+    }
+
+    else if(function == "CR"){          
+        int r_count = 0;
+        int flag = 0;
+        for(int i=operandAdd;i<(operandAdd+9);i++){
+            for(int j=0;j<4;j++){
+                if(MM[i][j] != R[r_count++]){
+                    flag = 1;
+                    break;
+                }
+            }
+        }
+        if(flag == 0){
+            C = true;
+        }
+        else{
+            C = false;
+        }
+        si = 0;
+    }
+
+    else if(function == "BT"){              
+        if(C == true){
+            Ic = operandAdd + (IR[3] - 48);
+        }
+        else{
+            continue;
+        }
+        si = 0;
+    }
+
+    else if(function == "GD"){          
+        si = 1;
+    }
+    else if(function == "PD"){          
+        si = 2;
+    }
+    else if(IR[0] == 'H'){             
+        si = 3;
+        MOS(data);
+        break;
+    }
+    else{
+        printf("Invalid Job");
+        return;
+    }
+
+    MOS(data);         
+
+    }
+}
+
+void opsys::startexecution(string data[]){
+    Ic = 0;
+    executeuserprogram(data);               
+}
+
+
+void opsys::Load(){
+
+    if(buffer.length() > 40){
+        printf("index out of bound!");
+        return;
+    }
+
+    string databuffer[4]; 
+    int data_count =0;
+
+    
+    fin.open("input.txt"); 
+ 
+    while (getline(fin, buffer)) {      
+
+        string opcode = buffer;
+        string op = opcode.substr(0,4);
+        
+        if(op == "$AMJ"){
+            init();             
+            continue;
+        }
+        //data card
+        else if(op == "$DTA"){
+            while(getline(fin, buffer)){
+                if(buffer.substr(0,1) == "$"){
+                    break;
+                }
+                if (buffer.substr(0,1) != "$"){
+                    databuffer[data_count++] = buffer;
+                }
+                else{
+                   continue;
+                }
+            }
+            
+           if(databuffer->empty()){
+                cout<<"Data Missing Error"<<endl;
+           }
+            startexecution(databuffer);         
+        }
+
+        else if(op == "$END"){
+           continue;
+        }
+
+         
+        else{     
+            string inst = buffer;
+            int row = 0;
+            int col =0;
+            for(int i =0;i<inst.length();i++){
+                if(col == 4){
+                    row++;
+                    col = 0;
+                }
+                MM[row][col] = inst.at(i);
+                if(inst.at(i)== 'H'){
+                    row++;
+                    col = 0;
+                }
+                else{
+                col++;
+                }
+            }
+        }
+    }
+
+    fin.close();    
+}
+
+void opsys::displayMemory(){        
+
+    printf("\n Main Memory Simulation\n\n");
+    for(int i =0;i<60;i++){
+        printf("%2d     ",i);
+        for(int j=0;j<4;j++){
+            printf("%5c ",MM[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+int main(){
+
+    opsys vos;                  
+
+    vos.init();                 
+    vos.displayMemory();
+    vos.Load();                 
+
+    cout<<"\n\n\n***After Execution of Job***\n"<<endl;
+    vos.displayMemory();        
+   
+    return 0;
+}
+
+
+PHASE2 (load, execute user, addressmap)
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include<string.h>
+#include <stdlib.h>
+#include <time.h>
+#include "phase2.hpp"
+
+
+
+
+void opsys::init(){                    
+
+
+    for(int i =0;i<300;i++){
+        for(int j=0;j<4;j++){
+            MM[i][j] = '-';
+        }
+    }
+
+
+    si = 0;
+    ti = 0;
+    pi = 0;
+    IR[0] = ' ';
+    R[0] = ' ';
+    error = false;
+
+
+}
+
+
+void opsys::errmsg(int EM){
+
+
+    ofstream outputFile("output.txt",ios::app);
+    string error;
+
+
+    switch(EM){
+
+
+        case 0:
+            error = "NO Error";
+            outputFile<<error<<endl;
+            break;
+        case 1:
+            error = "Out Of Data";
+            outputFile<<error<<endl;
+            break;
+        case 2:
+            error = "Line Limit Exceeded";
+            outputFile<<error<<endl;
+            break;
+        case 3:
+            error = "Time Limit Exceeded";
+            outputFile<<error<<endl;
+            break;
+        case 4:
+            error = "Opration Code Error";
+            outputFile<<error<<endl;
+            break;
+        case 5:
+            error = "Oprand Error";
+            outputFile<<error<<endl;
+            break;
+        case 6:
+            error = "Invalid Page Fault";
+            outputFile<<error<<endl;
+            break;
+    }
+     
+   
+        outputFile <<"si -> "<< si << endl;
+        outputFile <<"ti -> "<< ti << endl;
+        outputFile <<"pi -> "<< pi << endl;
+        outputFile <<"ttl -> "<< pcb.ttl << endl;
+        outputFile <<"tll -> "<< pcb.tll << endl;
+        outputFile <<"ttc -> "<< pcb.ttc << endl;
+        outputFile <<"Ic -> "<< Ic << endl;
+       
+       
+
+
+}
+
+
+void Terminate(){                              
+
+
+    ofstream outputFile("output.txt",ios::app);
+    outputFile<<"\n"<<endl;
+    outputFile.close();
+
+
+}
+
+
+int find(char ch1,char ch2){    
+   
+    if(isdigit(ch1) && isdigit(ch2)){
+        int tempop = ch1 - 48;
+        tempop = tempop*10;
+        return tempop;
+    }
+    else{
+       
+        return -1;
+    }
+}
+
+
+void opsys::Write(char IR[],char MM[][4]){        
+
+
+    pcb.llc++;                                    
+    if(pcb.llc > pcb.tll){                        
+        errmsg(2);
+        Terminate();
+
+
+        error=true;
+        return;
+    }
+   
+    int sadd = rd;
+    int eadd = sadd+9;
+    ofstream outputFile("output.txt",ios::app);
+
+
+    for(int i =sadd;i<eadd;i++){
+        for(int j=0;j<4;j++){
+            if(MM[i][j] != '-'){
+            outputFile<<MM[i][j];
+            }
+        }
+    }
+    outputFile.close();
+}
+
+
+
+
+int di = 0;
+
+
+void opsys::Read(string data[],char IR[],char MM[][4]){        
+
+
+   
+    string dataline = data[di++];
+
+
+    if(dataline.at(0) == '$'){
+        errmsg(1);
+        error = true;
+    }
+
+
+    IR[3] = '0';  
+     
+    int row = rd;
+    int col =0;
+    for(int i =0;i<dataline.length();i++){
+        if(col == 4){
+            row++;
+            col = 0;
+        }
+        MM[row][col] = dataline.at(i);
+        col++;
+    }
+}
+
+
+
+
+void opsys::MOS(string data[]){
+
+
+    if(ti == 0 && si ==1 ){
+        Read(data,IR,MM);
+    }
+    else if(ti ==0 && si==2){
+        Write(IR,MM);
+    }
+    else if(ti ==0 && si== 3 && pi ==0){
+        errmsg(0);
+        Terminate();
+    }
+    else if(ti ==2 && si== 1){
+        errmsg(3);
+        Terminate();
+        error =  true;
+    }
+    else if(ti == 2 && si== 2){
+        Write(IR,MM);
+        errmsg(3);
+        Terminate();
+        error =  true;
+    }
+    else if(ti == 2 && si== 3 && pi == 0){
+        errmsg(0);
+        Terminate();  
+        error = true;
+    }
+    else if(ti == 0 && pi == 1){
+        errmsg(4);
+        Terminate();
+        error = true;
+    }
+    else if(ti ==0 && pi== 2){
+        errmsg(5);
+        Terminate();
+        error = true;
+    }
+    else if(ti ==0 && pi== 3){
+       
+        if(function == "GD" || function =="SR"){      
+            string progce;
+            while(true){
+       
+            srand(time(0));
+            int fream_no = rand()%30;
+
+
+            if(isFree(fream_no)){
+                progce = to_string(fream_no);
+                break;
+            }else{
+                continue;
+            }
+            }
+             
+            int k =3;
+            for(int i=progce.length()-1;i>=0;i--){
+                MM[ptr+(opAdd/10)][k] = progce.at(i);
+                k--;
+            }
+            for(int i=k;i>=0;i--){
+                MM[ptr+(opAdd/10)][i] = '0';
+            }
+           
+            Ic--;
+        }
+        else if(function == "PD")                  
+        {    
+            errmsg(6);
+            Terminate();
+            error = true;
+        }
+        else{
+            errmsg(4);
+            Terminate();
+            error = true;
+        }
+    }
+    else if(ti ==2 && pi== 1){
+        errmsg(3);
+        errmsg(4);
+        Terminate();
+        error = true;
+    }
+    else if(ti ==2 && pi== 2){
+        errmsg(3);
+        errmsg(5);
+        Terminate();
+        error = true;
+    }
+    else if(ti ==2 && pi== 3){
+        errmsg(3);
+        Terminate();
+        error = true;
+    }
+}
+
+
+void opsys::simulation(){
+    if(pcb.ttc > pcb.ttl){
+        ti = 2;
+    }
+}
+
+
+int opsys::addressMap(int vr){
+    int pte ;
+    int rd ;
+    if(vr >= 0 && vr <= 99){
+        pte = ptr + vr/10;
+        if(MM[pte][0] == '*'){
+            pi = 3;
+            return -1;
+        }
+        else{
+            string sfno ="";
+            for(int i=0;i<4;i++){
+                sfno = sfno + MM[pte][i];
+            }
+            int fno = stoi(sfno);
+            rd = fno*10 + vr%10;
+            return rd;
+        }
+    }
+    else{
+        pi = 2;
+        string data[30] = {};
+        MOS(data);
+    }
+}
+
+
+void opsys::executeuserprogram(string data[]){
+ 
+    while(true){
+
+
+        if(error){
+
+
+            return;
+
+
+        }
+
+
+    si = 3;
+    pi = 0;
+    ti = 0;                        
+
+
+    int ra = addressMap(Ic);
+    if(ra == -1){                  
+        Terminate();
+        break;
+    }
+
+
+    for (int j = 0; j < 4; j++) {      
+        IR[j] = MM[ra][j];
+    }
+ 
+    Ic++;
+   
+    function = "";
+    function = function + IR[0];
+    function = function + IR[1];
+    int operandAdd ;
+
+
+    if(IR[0] != 'H'){
+        opAdd = find(IR[2],IR[3]);
+        operandAdd = addressMap(opAdd);
+        if(error){
+            return;
+        }
+    }
+
+
+    if(operandAdd == -1 && IR[0] != 'H'){
+        pi = 3;
+        simulation();
+        MOS(data);
+        continue;
+    }
+
+
+   
+    if(function == "LR"){              
+        int r_count =0;
+        for(int i =operandAdd;i<=(operandAdd+9);i++){
+            for(int j = 0;j<4;j++){
+                R[r_count++] = MM[i][j];
+            }
+        }
+       si = 0;
+    }
+
+
+    else if(function == "SR"){          
+
+
+        int r_count = 0;
+        for(int i = operandAdd;i<(operandAdd+9);i++){
+            for(int j=0;j<4;j++){
+                MM[i][j] = R[r_count++];
+            }
+        }  
+        si =0;
+    }
+
+
+    else if(function == "CR"){          
+        int r_count = 0;
+        int flag = 0;
+        for(int i=operandAdd;i<(operandAdd+9);i++){
+            for(int j=0;j<4;j++){
+                if(MM[i][j] != R[r_count++]){
+                    flag = 1;
+                    break;
+                }
+            }
+        }
+        if(flag == 0){
+            C = true;
+        }
+        else{
+            C = false;
+        }
+        si = 0;
+    }
+
+
+    else if(function == "BT"){              
+        if(C == true){
+            Ic = operandAdd + (IR[3] - 48);
+            C = false;
+        }
+        else{
+            continue;
+        }
+        si = 0;
+    }
+
+
+    else if(function == "GD"){          
+        si = 1;
+        rd = operandAdd;
+        pcb.ttc = pcb.ttc+2;
+    }
+    else if(function == "PD"){          
+        si = 2;
+        pcb.ttc++;
+        rd = operandAdd;
+    }
+    else if(IR[0] == 'H'){              
+        si = 3;
+        pcb.ttc++;
+        simulation();
+        MOS(data);
+        break;
+    }
+    else{
+        si = 0;
+        pi = 1;
+    }
+
+
+    simulation();
+    MOS(data);                        
+    }
+}
+
+
+void opsys::startexecution(string data[]){
+    Ic = 0;
+    executeuserprogram(data);              
+}
+
+
+bool opsys::isFree(int fream_no){
+    int esf = 0;
+    for(int i=fream_no*10;i<fream_no*10+9;i++){
+        for(int j=0;j<4;j++){
+            if(MM[i][j] != '-'){
+                esf = 1;
+                break;
+            }
+        }
+        if(esf == 0){
+            return true;
+       }
+       else{
+        return false;
+       }
+    }
+}
+
+
+void opsys::Allocatefream(){
+    int ptsi ;              
+    while (true)
+    {
+        srand(time(0));
+        int fream_no = rand()%30;
+       
+        if(isFree(fream_no)){
+            ptsi = fream_no*10;
+            for(int i=ptsi;i<=ptsi+9;i++){
+                for(int j=0;j<4;j++){
+                    MM[i][j] = '*';
+                }
+            }
+            break;
+        }
+        else{
+            continue;
+        }
+    }
+
+
+    ptr = ptsi;
+}
+
+
+void opsys::Load(){
+ 
+   
+    if(buffer.length() > 40){
+        printf("index out of bound!");
+        return;
+    }
+
+
+    string databuffer[4];
+    int data_count =0;
+
+
+   
+    fin.open("inputx.txt");  
+ 
+    while (getline(fin, buffer)) {      
+
+
+        string opcode = buffer;
+        string op = opcode.substr(0,4);
+       
+        if(op == "$AMJ"){  
+            init();            
+            Allocatefream();
+            string pid = opcode.substr(4,4);
+            string timelimit = opcode.substr(8,4);
+            string linelimit = opcode.substr(12,4);
+            pcb.pid = stoi(pid);
+            pcb.ttl = stoi(timelimit);
+            pcb.tll = stoi(linelimit);
+            pcb.llc = 0;
+            pcb.ttc = 0;
+            continue;
+        }
+       
+        else if(op == "$DTA"){
+            while(getline(fin, buffer)){
+                if(buffer.substr(0,1) == "$"){
+                    break;
+                }
+                if (buffer.substr(0,1) != "$"){
+                    databuffer[data_count++] = buffer;
+                }
+                else{
+                   continue;
+                }
+            }
+            startexecution(databuffer);        
+        }
+
+
+        else if(op == "$END"){
+           break;
+        }
+
+
+         
+        else{    
+            string inst = buffer;
+            int progei;
+            while(true){
+
+
+                srand(time(0));
+                int fream_no = rand()%30;
+
+
+                if(isFree(fream_no)){
+                    progei = fream_no;
+                    break;
+                }
+                else{
+                   continue;
+                }
+            }
+
+
+            int row = progei*10;
+            int col =0;
+            for(int i =0;i<buffer.length();i++){
+                if(col == 4){
+                    row++;
+                    col = 0;
+                }
+                MM[row][col] = buffer.at(i);
+                if(buffer.at(i) == 'H'){
+                    row++;
+                    col = 0;
+                }
+                else{
+                    col++;
+                }
+            }
+           
+           
+            string progce = to_string(progei);
+            int k =3;
+            for(int i=progce.length()-1;i>=0;i--){
+                MM[ptr][k] = progce.at(i);
+                k--;
+            }
+            for(int i=k;i>=0;i--){
+                MM[ptr][i] = '0';
+            }
+        }
+    }
+    fin.close();    
+}
+
+
+void opsys::displayMemory(){        
+
+
+    printf("\n Main Memory Simulation\n\n");
+    for(int i =0;i<300;i++){
+        printf("%2d     ",i);
+        for(int j=0;j<4;j++){
+            printf("%5c ",MM[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+
